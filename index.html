@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タルコフ タスク管理アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>タルコフ タスク管理アプリ</h1>
+    </header>
+    <main>
+        <div id="task-search">
+            <input type="text" id="task-search-input" placeholder="タスク名を検索..." />
+            <ul id="task-suggestions"></ul>
+        </div>
+        <div id="task-container">
+            <h2>タスクリスト</h2>
+            <table id="task-table">
+                <thead>
+                    <tr>
+                        <th>完了</th>
+                        <th>タスク名</th>
+                        <th>トレーダー</th>
+                        <th>マップ</th>
+                        <th>目標</th>
+                        <th>色</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- タスクがここに追加されます -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
