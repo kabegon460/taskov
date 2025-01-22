@@ -12,6 +12,21 @@ header {
     padding: 20px 0;
 }
 
+header h1 {
+    color: white;
+    font-size: 36px;
+    text-align: center;
+    margin: 0; /* 上下の余白をなくす */
+}
+
+header h2 {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    margin-top: 10px; /* タイトルとサブタイトルの間に余白を追加 */
+    font-weight: normal; /* 必要に応じてサブタイトルのスタイルを調整 */
+}
+
 main {
     padding: 20px;
 }
@@ -25,6 +40,8 @@ main {
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* はみ出しを防ぐ */
+    box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
 }
 
 #task-search-input {
@@ -38,7 +55,7 @@ main {
 #task-container {
     margin: 20px auto;
     width: 80%;
-    max-width: 800px;
+    max-width: 1200px;
     text-align: left;
     background: #3c3c3c;
     padding: 10px;
@@ -57,7 +74,7 @@ th, td {
     text-align: left;
     border: 1px solid #ccc;
     color: #000;
-    background-color: #fff;
+    background-color: initial; /* 初期値に戻す */
 }
 
 th {
@@ -75,3 +92,196 @@ input[type="color"] {
 .hidden {
     display: none;
 }
+
+#task-table thead th {
+    background-color: #f5f5f5; /* ヘッダーの背景色 */
+    color: #000; /* ヘッダーの文字色 */
+
+}
+
+
+
+#task-table thead th.sortable {
+    background-color: #f5f5f5; /* ヘッダーの背景色 */
+    color: #000; /* ヘッダーの文字色 */
+    cursor: pointer; /* クリック可能に */
+}
+
+#task-table thead th.sortable:hover {
+    background-color: #e0e0e0; /* ホバー時の背景色 */
+}
+
+.sort-icon {
+    cursor: pointer; /* クリック可能に */
+    font-size: 14px; /* アイコンのサイズ */
+    margin-left: 5px; /* テキストとの間隔 */
+    color: #666; /* 初期のアイコン色 */
+}
+
+.sort-icon:hover {
+    color: #000; /* ホバー時に濃い色に */
+}
+
+.sort-icon.asc::after {
+    content: "▲"; /* 昇順アイコン */
+    color: #000;
+}
+
+.sort-icon.desc::after {
+    content: "▼"; /* 降順アイコン */
+    color: #000;
+}
+
+textarea {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none; /* サイズ変更を無効化 */
+    box-sizing: border-box;
+}
+
+textarea:focus {
+    border-color: #1e90ff;
+    outline: none;
+}
+
+textarea {
+    width: 100%; /* 親セルの幅に合わせる */
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none; /* サイズ変更を無効化 */
+    box-sizing: border-box;
+    background-color: #f9f9f9; /* 薄い背景色 */
+    color: #333; /* 文字色 */
+}
+
+textarea::placeholder {
+    color: #aaa; /* プレースホルダーの薄い文字色 */
+    font-style: italic; /* 斜体で薄い文字に見せる */
+}
+
+textarea:focus {
+    border-color: #1e90ff; /* フォーカス時の枠色 */
+    outline: none;
+}
+
+/* 全体のレイアウト */
+#container {
+    display: flex;
+}
+
+/* サイドバーのスタイル */
+#sidebar {
+    width: 200px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    height: 100vh; /* ビューポート全体の高さ */
+    position: fixed; /* 固定 */
+    overflow-y: auto; /* スクロール可能 */
+}
+
+#sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+}
+
+#sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li {
+    margin-bottom: 10px;
+}
+
+#sidebar ul li a {
+    color: #1e90ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* メインコンテンツのスタイル */
+main {
+    margin-left: 220px; /* サイドバーの幅分余白を取る */
+    padding: 20px;
+    flex-grow: 1;
+}
+
+td[contenteditable="true"] {
+    border: 1px solid #ccc; /* 編集可能なセルに枠線を付ける */
+    padding: 5px; /* 内側の余白を調整 */
+    outline: none; /* フォーカス時の青い枠を消す */
+}
+
+td[contenteditable="true"]:focus {
+    border: 1px solid #1e90ff; /* フォーカス時の枠線の色を変更 */
+    background-color: #f9f9f9; /* 背景色を変更して強調 */
+}
+
+  /* 全てのリンクのスタイル */
+  a {
+    color: blue; /* リンクの色を固定 */
+    text-decoration: underline; /* 必要に応じて装飾を変更 */
+  }
+
+  /* 訪問済みリンクのスタイルを通常リンクと同じに設定 */
+  a:visited {
+    color: blue; /* 訪問済みリンクの色を通常リンクと同じに設定 */
+  }
+
+  /* マウスオーバー時のスタイル */
+  a:hover {
+    color: darkblue; /* ホバー時に少し濃い色にする例 */
+  }
+
+  /* フォーカス時のスタイル（必要に応じて） */
+  a:focus {
+    outline: none;
+  }
+  #task-suggestions li {
+    padding: 8px;
+    cursor: pointer;
+    padding-left: 0; /* パディングをゼロに設定 */
+    margin-left: 0; /* マージンをゼロに設定 */
+}
+
+#task-suggestions li.highlight {
+    background-color: #cce5ff;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0; /* パディングをゼロに設定 */
+    margin-left: 0; /* マージンをゼロに設定 */
+}
+
+#task-suggestions li:hover {
+    background-color: #f0f0f0; /* ホバー時の背景色を指定 */
+}
+#task-suggestions :hover {
+    background-color: #2e2d2d; /* search-resultsのホバー時の背景色 */
+}
+
+#task-suggestions {
+    max-height: 200px; /* 必要に応じて高さを調整 */
+    overflow-y: auto; /* 垂直方向のスクロールバーを追加 */
+}
+
+#task-suggestions  {
+    cursor: pointer; /* カーソルを指さしアイコンに設定 */
+}
+
+

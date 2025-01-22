@@ -3,31 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>タルコフ タスク管理アプリ</title>
+    <title>タスコフ - タルコフ タスク管理アプリ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>タルコフ タスク管理アプリ</h1>
+        <h1>タスコフ</h1> <!-- メインタイトル -->
+        <h2>タルコフ タスク管理アプリ</h2> <!-- サブタイトル -->
     </header>
+    <div id="container">
+        <!-- 左のサイドバー -->
+        <aside id="sidebar">
+            <nav>
+                <h2>マップ</h2>
+                <ul>
+                    <li><a href="https://wikiwiki.jp/eft/FACTORY" target="_blank">FACTORY</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/WOODS" target="_blank">WOODS</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/CUSTOMS" target="_blank">CUSTOMS</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/SHORELINE" target="_blank">SHORELINE</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/INTERCHANGE" target="_blank">INTERCHANGE</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/THE%20LAB" target="_blank">THE LAB</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/RESERVE" target="_blank">RESERVE</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/LIGHTHOUSE" target="_blank">LIGHTHOUSE</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/STREETS%20OF%20TARKOV" target="_blank">STREETS OF TARKOV</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/GROUND%20ZERO" target="_blank">GROUND ZERO</a></li>
+                </ul>
+                <h2>トレーダー</h2>
+                <ul>
+                    <li><a href="https://wikiwiki.jp/eft/Prapor" target="_blank">Prapor</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/Therapist" target="_blank">Therapist</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/Skier" target="_blank">Skier</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/Peacekeeper" target="_blank">Peacekeeper</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/Mechanic" target="_blank">Mechanic</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/Ragman" target="_blank">Ragman</a></li>
+                    <li><a href="https://wikiwiki.jp/eft/Jaeger" target="_blank">Jaeger</a></li>
+                </ul>
+            </nav>
+        </aside>
     <main>
         <div id="task-search">
             <input type="text" id="task-search-input" placeholder="タスク名を検索..." />
-            <ul id="task-suggestions"></ul>
+            <div id="task-suggestions"></div>
         </div>
+        
         <div id="task-container">
             <h2>タスクリスト</h2>
+            
+            <button id="reset-button">リセット</button>
             <table id="task-table">
-                <thead>
+                <colgroup>
+                        <col style="width: 5%;">
+                        <col style="width: 5%;">
+                        <col style="width: 15%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 40%;">
+                        <col style="width: 25%;"> <!-- メモ欄の幅を広げる -->
+                    </colgroup>
+                    <thead>
+                    
                     <tr>
                         <th>完了</th>
-                        <th>タスク名</th>
-                        <th>トレーダー</th>
-                        <th>マップ</th>
+                        <th>
+                            色
+                            <span class="sort-icon" data-column="1">⇵</span>
+                        </th>
+                        <th>タスク名(Wiki)</th>
+                        <th>
+                            トレーダー
+                            <span class="sort-icon" data-column="3">⇵</span>
+                        </th>
+                        <th>
+                            マップ
+                            <span class="sort-icon" data-column="4">⇵</span>
+                        </th>
                         <th>目標</th>
-                        <th>色</th>
+                        <th>メモ</th>
                     </tr>
                 </thead>
+                
                 <tbody>
                     <!-- タスクがここに追加されます -->
                 </tbody>
