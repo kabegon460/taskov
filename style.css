@@ -1,12 +1,11 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #2c2c2c;
+    background-color: #2e2e2e; /* ダークグレーの背景色 */
     color: #ffffff;
     margin: 0;
     padding: 0;
     text-align: center;
 }
-
 
 header {
     background-color: #1e1e1e;
@@ -22,7 +21,7 @@ header h1 {
 
 header h2 {
     color: white;
-    font-size: 24px;
+    font-size: 20px;
     text-align: center;
     margin-top: 10px; /* タイトルとサブタイトルの間に余白を追加 */
     font-weight: normal; /* 必要に応じてサブタイトルのスタイルを調整 */
@@ -51,6 +50,7 @@ main {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    box-sizing: border-box;
 }
 
 #task-container {
@@ -173,24 +173,25 @@ textarea:focus {
 /* 全体のレイアウト */
 #container {
     display: flex;
+    flex-direction: row;
+    background-color: #3b3b3b; /* ダークグレーの背景色 */
+    color: #ffffff; /* 白い文字色 */
 }
 
 /* サイドバーのスタイル */
 #sidebar {
     width: 200px;
-    background-color: #1e1e1e;
+    background-color: #4b4b4b; /* 迷彩色の一部 */
     color: #ffffff;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
     height: 100vh; /* ビューポート全体の高さ */
-    position: fixed; /* 固定 */
-    overflow-y: auto; /* スクロール可能 */
 }
 
 #sidebar h2 {
     font-size: 18px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #5c5c5c; /* 迷彩色の一部 */
     padding-bottom: 5px;
 }
 
@@ -205,18 +206,18 @@ textarea:focus {
 }
 
 #sidebar ul li a {
-    color: #1e90ff;
+    color: #ffffff;
     text-decoration: none;
-    font-size: 14px;
 }
 
 #sidebar ul li a:hover {
-    text-decoration: underline;
+    color: #a9a9a9; /* 迷彩色の一部 */
 }
 
 /* メインコンテンツのスタイル */
 main {
     margin-left: 220px; /* サイドバーの幅分余白を取る */
+    margin: 0 auto;
     padding: 20px;
     flex-grow: 1;
 }
@@ -279,10 +280,46 @@ ul {
 #task-suggestions {
     max-height: 200px; /* 必要に応じて高さを調整 */
     overflow-y: auto; /* 垂直方向のスクロールバーを追加 */
-}
-
-#task-suggestions  {
     cursor: pointer; /* カーソルを指さしアイコンに設定 */
 }
 
+#task-suggestions  {
+    position: absolute; /* 他の要素に影響を与えない */
+    z-index: 1000; /* 他の要素より前面に表示 */
+    background: #2c2c2c; /* 背景色を設定（必須ではない） */
+    
+}
 
+
+
+  #note-container {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 1200px;
+    text-align: left;
+    background: #3c3c3c; /* 迷彩色の一部 */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#note {
+   
+    height: 200px; /* 初期の高さ */
+  }
+
+ #task-container h2, #note-container h2 {
+    margin: 10px 0; 
+ }
+
+/* メディアクエリ */
+@media (max-width: 768px) {
+    #container {
+        flex-direction: column;
+    }
+
+    #sidebar {
+        width: 100%;
+        height: auto; /* コンテンツの高さに合わせる */
+    }
+}

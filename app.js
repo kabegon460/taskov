@@ -17,9 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetButton = document.getElementById("reset-button");
     if (resetButton) {
         resetButton.addEventListener("click", () => {
-            localStorage.clear(); // ローカルストレージをクリア
-            taskData = []; // タスクデータをクリア
-            displayTasks(taskData); // 空のタスクを表示してリセットを反映
+            const confirmation = confirm('本当にリセットしますか？');
+            if (confirmation) {
+                localStorage.clear(); // ローカルストレージをクリア
+                taskData = []; // タスクデータをクリア
+                displayTasks(taskData); // 空のタスクを表示してリセットを反映
+                console.log('リセットが実行されました');
+            } else {
+                console.log('リセットがキャンセルされました');
+            }
         });
     }
 
@@ -52,6 +58,24 @@ document.addEventListener("DOMContentLoaded", () => {
             // タスク名検索の入力フィールドをクリア
             taskNameInput.value = '';
         }
+    });
+
+   
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const noteElement = document.getElementById('note');
+
+    // 保存されたノートを表示
+    const savedNote = localStorage.getItem('note');
+    if (savedNote) {
+        noteElement.value = savedNote;
+    }
+
+    // ノートの内容をローカルストレージに自動保存
+    noteElement.addEventListener('input', function() {
+        const note = noteElement.value;
+        localStorage.setItem('note', note);
     });
 });
 
@@ -223,11 +247,18 @@ function sortTable(columnIndex, isColorColumn = false) {
     rows.forEach(row => tableBody.appendChild(row));
 }
 
+
 function addSearchListener() {
     const searchInput = document.getElementById("task-search-input"); // IDを修正
+    const taskSuggestions = document.getElementById("task-suggestions");
     if (searchInput) {
         searchInput.addEventListener("input", () => {
             const query = searchInput.value.toLowerCase();
+            if (query.trim() !== '') {
+                taskSuggestions.style.display = 'block';
+            } else {
+                taskSuggestions.style.display = 'none';
+            }
             fetchTasks(query); // 検索クエリに基づいてタスクを取得
         });
     }
@@ -238,11 +269,19 @@ function displaySearchResults(tasks) {
     const searchResults = document.getElementById("task-suggestions");
     searchResults.innerHTML = ""; // 検索結果の内容をクリア
 
+    
+
     tasks.forEach((task, index) => {
         const resultItem = document.createElement("div");
         resultItem.textContent = task[0]; // タスクの名前を表示
         resultItem.addEventListener("click", () => {
             taskData.push(task); // タスクを追加
+            const searchInput = document.getElementById('task-search-input');
+        searchInput.value = ''; // 検索入力欄をクリア
+        
+        // 手動でinputイベントを発火させる
+        const event = new Event('input', { bubbles: true });
+        searchInput.dispatchEvent(event);
             saveTasksToLocalStorage(); // ローカルストレージに保存
             displayTasks(taskData); // タスクを表示
         });
@@ -250,26 +289,7 @@ function displaySearchResults(tasks) {
     });
 }
 
-function clearSuggestions() {
-    const suggestionsList = document.querySelector("#task-suggestions");
-    suggestionsList.innerHTML = ""; // 既存の提案をクリア
-}
 
-function displaySuggestions(suggestions) {
-    const suggestionsList = document.querySelector("#task-suggestions");
-    suggestionsList.innerHTML = ""; // 既存の提案をクリア
-
-    suggestions.forEach((task, index) => {
-        const suggestionItem = document.createElement("li");
-        suggestionItem.textContent = task[0]; // タスク名を表示
-        suggestionItem.addEventListener("click", () => {
-            addTaskToTable(task);
-            suggestionsList.innerHTML = ""; // 提案リストをクリア
-            document.querySelector("#task-search-input").value = ""; // 検索欄の文字を消去
-        });
-        suggestionsList.appendChild(suggestionItem);
-    });
-}
 
 function addTaskToTable(task) {
     const tableBody = document.querySelector("#task-table tbody");
@@ -342,3 +362,5 @@ function addTaskToTable(task) {
 
     tableBody.appendChild(row);
 }
+
+

@@ -38,6 +38,12 @@
                     <li><a href="https://wikiwiki.jp/eft/Ragman" target="_blank">Ragman</a></li>
                     <li><a href="https://wikiwiki.jp/eft/Jaeger" target="_blank">Jaeger</a></li>
                 </ul>
+                <h2>その他</h2>
+                <ul>
+                    <li><a href="https://escapefromtarkov.fandom.com/wiki/Escape_from_Tarkov_Wiki" target="_blank">海外Wiki</a></li>
+                    <li><a href="https://tarkov-market.com/" target="_blank">Tarkov Market</a></li>
+                  
+                </ul>
             </nav>
         </aside>
     <main>
@@ -48,8 +54,10 @@
         
         <div id="task-container">
             <h2>タスクリスト</h2>
-            
-            <button id="reset-button">リセット</button>
+
+            <div class="button-container">
+                <button id="reset-button">リセット</button>
+              </div>
             <table id="task-table">
                 <colgroup>
                         <col style="width: 5%;">
@@ -86,6 +94,11 @@
                     <!-- タスクがここに追加されます -->
                 </tbody>
             </table>
+        </div>
+        <div id="note-container">
+            <h2>ノート</h2>
+            <textarea id="note" placeholder="やることなど..."></textarea>
+            
         </div>
     </main>
     <script src="app.js"></script>
