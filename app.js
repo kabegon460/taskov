@@ -398,3 +398,4 @@ function changeColor(newColor) {
         console.log(`Selected name: ${selectedName}`);
     }
 }
+

@@ -10,6 +10,7 @@ body {
 header {
     background-color: #1e1e1e;
     padding: 20px 0;
+   
 }
 
 header h1 {
@@ -42,6 +43,7 @@ main {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     overflow: hidden; /* はみ出しを防ぐ */
     box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
+    margin-left: 10px; /* #task-containerのpadding-leftと同じ値に設定 */
 }
 
 #task-search-input {
@@ -51,17 +53,19 @@ main {
     border-radius: 5px;
     font-size: 16px;
     box-sizing: border-box;
+    
 }
 
 #task-container {
     margin: 20px auto;
-    width: 80%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1400px;
     text-align: left;
     background: #3c3c3c;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-left: 10px; /* #task-containerのpadding-leftと同じ値に設定 */
 }
 
 table {
@@ -141,6 +145,7 @@ textarea {
     border-radius: 5px;
     resize: none; /* サイズ変更を無効化 */
     box-sizing: border-box;
+    
 }
 
 textarea:focus {
@@ -301,6 +306,7 @@ ul {
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-left: 10px; /* #task-containerのpadding-leftと同じ値に設定 */
 }
 
 #note {
@@ -314,4 +320,20 @@ ul {
  #note-container h2{
     margin: 10px 0; 
  }
+
  
+ 
+
+
+@media (max-width: 600px) {
+    #sidebar {
+        display: none;
+    }
+
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
