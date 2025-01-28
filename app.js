@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (taskName) {
             const taskTableBody = document.querySelector('#task-table tbody');
-            const newRow = taskTableBody.insertRow();
+            const newRow = taskTableBody.insertRow(0); // 先頭に追加
 
             // 必要なセルを追加してタスク情報を設定
             const cell1 = newRow.insertCell(0);
@@ -57,10 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // タスク名検索の入力フィールドをクリア
             taskNameInput.value = '';
+
+            // タスクデータの先頭に追加
+            taskData.unshift([taskName, '', 'トレーダー', 'マップ', '目標', 'メモ', '#ffffff', false]);
+            saveTasksToLocalStorage(); // ローカルストレージに保存
+            displayTasks(taskData); // タスクを表示
         }
     });
-
-   
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -88,7 +91,7 @@ async function fetchTasks(query) {
         console.log("Fetched data:", data); // デバッグ用にデータを確認
         if (data.values) {
             // 検索クエリに一致するタスクをフィルタリング
-            const newTasks = data.values.slice(1).filter(row => row.some(field => field.toLowerCase().includes(query.toLowerCase()))).map(row => [...row, "", "#ffffff"]); // 空のメモ欄とデフォルトの色を追加
+            const newTasks = data.values.slice(1).filter(row => row.some(field => field.toLowerCase().includes(query.toLowerCase()))).map(row => [...row, "", "#ffffff"].map(field => field.replace(/\n/g, '<br>'))); // 空のメモ欄とデフォルトの色を追加し、改行を <br> に変換
             displaySearchResults(newTasks); // 検索結果を表示
         } else {
             console.error("データが見つかりませんでした");
@@ -110,6 +113,13 @@ function loadTasksFromLocalStorage() {
         taskData = JSON.parse(storedTasks);
         displayTasks(taskData); // タスクを表示
     }
+}
+
+// タスクを追加する関数
+function addTask(task) {
+    taskData.unshift(task); // 新しいタスクを配列の先頭に追加
+    saveTasksToLocalStorage(); // ローカルストレージに保存
+    displayTasks(taskData); // テーブルを再描画
 }
 
 // タスクを表示する関数
@@ -181,16 +191,16 @@ function displayTasks(tasks) {
         traderCell.textContent = task[2];
 
         const mapCell = document.createElement("td");
-        mapCell.textContent = task[3];
+        mapCell.innerHTML = task[3]; // innerHTMLを使用して改行を反映
 
         const objectiveCell = document.createElement("td");
-        objectiveCell.textContent = task[4];
+        objectiveCell.innerHTML = task[4]; // innerHTMLを使用して改行を反映
 
         const memoCell = document.createElement("td");
         memoCell.contentEditable = true;
-        memoCell.textContent = task[5] || "";
+        memoCell.innerHTML = task[5] || ""; // innerHTMLを使用して改行を反映
         memoCell.addEventListener("input", () => {
-            taskData[index][5] = memoCell.textContent;
+            taskData[index][5] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
             saveTasksToLocalStorage(); // ローカルストレージに保存
         });
 
@@ -202,7 +212,7 @@ function displayTasks(tasks) {
         row.appendChild(objectiveCell);
         row.appendChild(memoCell);
 
-        tableBody.appendChild(row);
+        tableBody.appendChild(row); // 順序を保持して追加
     });
 }
 
@@ -222,6 +232,7 @@ function addSortListeners() {
                 sortOrder = 1;
             }
             sortTable(index, isColorColumn);
+            saveTasksToLocalStorage(); // ソート後の順序を保存
         });
     });
 }
@@ -245,8 +256,23 @@ function sortTable(columnIndex, isColorColumn = false) {
     });
 
     rows.forEach(row => tableBody.appendChild(row));
-}
 
+    // ソート後の順序を保存
+    taskData = rows.map(row => {
+        const cells = row.children;
+        return [
+            cells[2].textContent.trim(), // タスク名
+            cells[2].querySelector('a').href, // リンク
+            cells[3].textContent.trim(), // トレーダー
+            cells[4].textContent.trim(), // マップ
+            cells[5].innerHTML.trim().replace(/\n/g, '<br>'), // 目標 (改行を反映)
+            cells[6].textContent.trim(), // メモ
+            row.style.backgroundColor, // 色
+            cells[0].querySelector('input').checked // 完了状態
+        ];
+    });
+    saveTasksToLocalStorage(); // ローカルストレージに保存
+}
 
 function addSearchListener() {
     const searchInput = document.getElementById("task-search-input"); // IDを修正
@@ -269,27 +295,23 @@ function displaySearchResults(tasks) {
     const searchResults = document.getElementById("task-suggestions");
     searchResults.innerHTML = ""; // 検索結果の内容をクリア
 
-    
-
     tasks.forEach((task, index) => {
         const resultItem = document.createElement("div");
         resultItem.textContent = task[0]; // タスクの名前を表示
         resultItem.addEventListener("click", () => {
             taskData.push(task); // タスクを追加
             const searchInput = document.getElementById('task-search-input');
-        searchInput.value = ''; // 検索入力欄をクリア
-        
-        // 手動でinputイベントを発火させる
-        const event = new Event('input', { bubbles: true });
-        searchInput.dispatchEvent(event);
+            searchInput.value = ''; // 検索入力欄をクリア
+
+            // 手動でinputイベントを発火させる
+            const event = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(event);
             saveTasksToLocalStorage(); // ローカルストレージに保存
             displayTasks(taskData); // タスクを表示
         });
         searchResults.appendChild(resultItem);
     });
 }
-
-
 
 function addTaskToTable(task) {
     const tableBody = document.querySelector("#task-table tbody");
@@ -340,16 +362,17 @@ function addTaskToTable(task) {
     traderCell.textContent = task[2];
 
     const mapCell = document.createElement("td");
-    mapCell.textContent = task[3];
+    mapCell.innerHTML = task[3]; // innerHTMLを使用して改行を反映
 
     const objectiveCell = document.createElement("td");
-    objectiveCell.textContent = task[4];
+    objectiveCell.innerHTML = task[4]; // innerHTMLを使用して改行を反映
 
     const memoCell = document.createElement("td");
     memoCell.contentEditable = true;
-    memoCell.textContent = task[5] || "";
+    memoCell.innerHTML = task[5] || ""; // innerHTMLを使用して改行を反映
     memoCell.addEventListener("input", () => {
-        taskData[index][5] = memoCell.textContent;
+        taskData[index][5] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
+        saveTasksToLocalStorage(); // ローカルストレージに保存
     });
 
     row.appendChild(completeCell);
@@ -360,7 +383,18 @@ function addTaskToTable(task) {
     row.appendChild(objectiveCell);
     row.appendChild(memoCell);
 
-    tableBody.appendChild(row);
+    tableBody.insertBefore(row, tableBody.firstChild); // 先頭に追加
 }
 
+// 色を変更する関数
+function changeColor(newColor) {
+    // 色を変更するロジック
+    document.body.style.backgroundColor = newColor;
 
+    // selectのnameを保持するロジック
+    const selectElement = document.querySelector('select[name="colorSelect"]');
+    if (selectElement) {
+        const selectedName = selectElement.name;
+        console.log(`Selected name: ${selectedName}`);
+    }
+}
