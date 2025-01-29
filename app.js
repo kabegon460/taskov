@@ -46,20 +46,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const cell5 = newRow.insertCell(4);
             const cell6 = newRow.insertCell(5);
             const cell7 = newRow.insertCell(6);
+            const cell8 = newRow.insertCell(7);
+            
 
             cell1.innerHTML = '<input type="checkbox">';
             cell2.innerHTML = '色';
             cell3.innerHTML = `<a href="#">${taskName}</a>`;
-            cell4.innerHTML = 'トレーダー';
-            cell5.innerHTML = 'マップ';
-            cell6.innerHTML = '目標';
-            cell7.innerHTML = 'メモ';
+            cell4.innerHTML = 'kappa';
+            cell5.innerHTML = 'トレーダー';
+            cell6.innerHTML = 'マップ';
+            cell7.innerHTML = '目標';
+            cell8.innerHTML = 'メモ';
 
             // タスク名検索の入力フィールドをクリア
             taskNameInput.value = '';
 
             // タスクデータの先頭に追加
-            taskData.unshift([taskName, '', 'トレーダー', 'マップ', '目標', 'メモ', '#ffffff', false]);
+            taskData.unshift([taskName, '','kappa', 'トレーダー', 'マップ', '目標', 'メモ', '#ffffff', false]);
             saveTasksToLocalStorage(); // ローカルストレージに保存
             displayTasks(taskData); // タスクを表示
         }
@@ -130,15 +133,15 @@ function displayTasks(tasks) {
     tasks.forEach((task, index) => {
         const row = document.createElement("tr");
 
-        row.style.backgroundColor = task[6] || "#ffffff"; // 保存された色を適用
+        row.style.backgroundColor = task[7] || "#ffffff"; // 保存された色を適用
 
         const completeCell = document.createElement("td");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.checked = task[7] || false; // 保存された完了状態を適用
+        checkbox.checked = task[8] || false; // 保存された完了状態を適用
         checkbox.addEventListener("change", () => {
             row.classList.toggle("hidden", checkbox.checked);
-            taskData[index][7] = checkbox.checked; // 完了状態を保存
+            taskData[index][8] = checkbox.checked; // 完了状態を保存
             saveTasksToLocalStorage(); // ローカルストレージに保存
         });
         completeCell.appendChild(checkbox);
@@ -165,14 +168,14 @@ function displayTasks(tasks) {
             option.textContent = color.name;
             option.style.backgroundColor = color.value;
             option.style.color = (color.value === "#ffffff") ? "#000000" : "#000000";
-            if (color.value === task[6]) {
+            if (color.value === task[7]) {
                 option.selected = true;
             }
             colorSelect.appendChild(option);
         });
 
         colorSelect.addEventListener("change", () => {
-            taskData[index][6] = colorSelect.value; // 色を保存
+            taskData[index][7] = colorSelect.value; // 色を保存
             row.style.backgroundColor = colorSelect.value; // 色を適用
             saveTasksToLocalStorage(); // ローカルストレージに保存
         });
@@ -187,26 +190,30 @@ function displayTasks(tasks) {
         link.target = "_blank";
         taskNameCell.appendChild(link);
 
+        const kappaCell = document.createElement("td");
+        kappaCell.textContent = task[2];
+
         const traderCell = document.createElement("td");
-        traderCell.textContent = task[2];
+        traderCell.textContent = task[3];
 
         const mapCell = document.createElement("td");
-        mapCell.innerHTML = task[3]; // innerHTMLを使用して改行を反映
+        mapCell.innerHTML = task[4]; // innerHTMLを使用して改行を反映
 
         const objectiveCell = document.createElement("td");
-        objectiveCell.innerHTML = task[4]; // innerHTMLを使用して改行を反映
+        objectiveCell.innerHTML = task[5]; // innerHTMLを使用して改行を反映
 
         const memoCell = document.createElement("td");
         memoCell.contentEditable = true;
-        memoCell.innerHTML = task[5] || ""; // innerHTMLを使用して改行を反映
+        memoCell.innerHTML = task[6] || ""; // innerHTMLを使用して改行を反映
         memoCell.addEventListener("input", () => {
-            taskData[index][5] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
+            taskData[index][6] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
             saveTasksToLocalStorage(); // ローカルストレージに保存
         });
 
         row.appendChild(completeCell);
         row.appendChild(colorCell);
         row.appendChild(taskNameCell);
+        row.appendChild(kappaCell);
         row.appendChild(traderCell);
         row.appendChild(mapCell);
         row.appendChild(objectiveCell);
@@ -220,7 +227,7 @@ function addSortListeners() {
     const headers = document.querySelectorAll("#task-table thead th");
     console.log("Headers found:", headers.length); // デバッグ用
     headers.forEach((header, index) => {
-        if (![1, 3, 4].includes(index)) return; // 色、タスク名、トレーダー、マップのみソート可能
+        if (![1, 3, 4, 5].includes(index)) return; // 色、タスク名、トレーダー、マップのみソート可能
         header.classList.add("sortable"); // ソート可能な列にクラスを追加
         header.addEventListener("click", () => {
             console.log(`Header clicked: Column ${index}`); // デバッグ用
@@ -263,10 +270,11 @@ function sortTable(columnIndex, isColorColumn = false) {
         return [
             cells[2].textContent.trim(), // タスク名
             cells[2].querySelector('a').href, // リンク
-            cells[3].textContent.trim(), // トレーダー
-            cells[4].textContent.trim(), // マップ
-            cells[5].innerHTML.trim().replace(/\n/g, '<br>'), // 目標 (改行を反映)
-            cells[6].textContent.trim(), // メモ
+            cells[3].textContent.trim(), // Kappa
+            cells[4].textContent.trim(), // トレーダー
+            cells[5].textContent.trim(), // マップ
+            cells[6].innerHTML.trim().replace(/\n/g, '<br>'), // 目標 (改行を反映)
+            cells[7].textContent.trim(), // メモ
             row.style.backgroundColor, // 色
             cells[0].querySelector('input').checked // 完了状態
         ];
@@ -358,26 +366,30 @@ function addTaskToTable(task) {
     link.target = "_blank";
     taskNameCell.appendChild(link);
 
+    const kappaCell = document.createElement("td");
+    kappaCell.textContent = task[2];
+
     const traderCell = document.createElement("td");
-    traderCell.textContent = task[2];
+    traderCell.textContent = task[3];
 
     const mapCell = document.createElement("td");
-    mapCell.innerHTML = task[3]; // innerHTMLを使用して改行を反映
+    mapCell.innerHTML = task[4]; // innerHTMLを使用して改行を反映
 
     const objectiveCell = document.createElement("td");
-    objectiveCell.innerHTML = task[4]; // innerHTMLを使用して改行を反映
+    objectiveCell.innerHTML = task[5]; // innerHTMLを使用して改行を反映
 
     const memoCell = document.createElement("td");
     memoCell.contentEditable = true;
-    memoCell.innerHTML = task[5] || ""; // innerHTMLを使用して改行を反映
+    memoCell.innerHTML = task[6] || ""; // innerHTMLを使用して改行を反映
     memoCell.addEventListener("input", () => {
-        taskData[index][5] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
+        taskData[index][6] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
         saveTasksToLocalStorage(); // ローカルストレージに保存
     });
 
     row.appendChild(completeCell);
     row.appendChild(colorCell);
     row.appendChild(taskNameCell);
+    row.appendChild(kappaCell);
     row.appendChild(traderCell);
     row.appendChild(mapCell);
     row.appendChild(objectiveCell);
