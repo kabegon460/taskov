@@ -120,6 +120,7 @@ function loadTasksFromLocalStorage() {
 
 // タスクを追加する関数
 function addTask(task) {
+    task.id = generateUniqueId(); // タスクに一意のIDを追加
     taskData.unshift(task); // 新しいタスクを配列の先頭に追加
     saveTasksToLocalStorage(); // ローカルストレージに保存
     displayTasks(taskData); // テーブルを再描画
@@ -130,7 +131,7 @@ function displayTasks(tasks) {
     const tableBody = document.querySelector("#task-table tbody");
     tableBody.innerHTML = ""; // テーブルの内容をクリア
 
-    tasks.forEach((task, index) => {
+    tasks.forEach((task) => {
         const row = document.createElement("tr");
 
         row.style.backgroundColor = task[7] || "#ffffff"; // 保存された色を適用
@@ -141,7 +142,8 @@ function displayTasks(tasks) {
         checkbox.checked = task[8] || false; // 保存された完了状態を適用
         checkbox.addEventListener("change", () => {
             row.classList.toggle("hidden", checkbox.checked);
-            taskData[index][8] = checkbox.checked; // 完了状態を保存
+            const taskIndex = taskData.findIndex(t => t.id === task.id);
+            taskData[taskIndex][8] = checkbox.checked; // 完了状態を保存
             saveTasksToLocalStorage(); // ローカルストレージに保存
         });
         completeCell.appendChild(checkbox);
@@ -175,7 +177,8 @@ function displayTasks(tasks) {
         });
 
         colorSelect.addEventListener("change", () => {
-            taskData[index][7] = colorSelect.value; // 色を保存
+            const taskIndex = taskData.findIndex(t => t.id === task.id);
+            taskData[taskIndex][7] = colorSelect.value; // 色を保存
             row.style.backgroundColor = colorSelect.value; // 色を適用
             saveTasksToLocalStorage(); // ローカルストレージに保存
         });
@@ -206,7 +209,8 @@ function displayTasks(tasks) {
         memoCell.contentEditable = true;
         memoCell.innerHTML = task[6] || ""; // innerHTMLを使用して改行を反映
         memoCell.addEventListener("input", () => {
-            taskData[index][6] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
+            const taskIndex = taskData.findIndex(t => t.id === task.id);
+            taskData[taskIndex][6] = memoCell.innerHTML.replace(/<br>/g, '\n'); // 改行を元に戻して保存
             saveTasksToLocalStorage(); // ローカルストレージに保存
         });
 
@@ -409,5 +413,10 @@ function changeColor(newColor) {
         const selectedName = selectElement.name;
         console.log(`Selected name: ${selectedName}`);
     }
+}
+
+// タスクに一意のIDを生成する関数
+function generateUniqueId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
 }
 
