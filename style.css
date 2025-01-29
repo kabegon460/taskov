@@ -33,7 +33,7 @@ main {
 }
 
 #task-search {
-    margin: 20px auto;
+    margin: 10px auto 20px auto; /* 上の余白を小さくする */
     width: 80%;
     max-width: 600px;
     text-align: left;
@@ -316,9 +316,11 @@ ul {
 
  #task-container h2{
     margin: 10px 0; 
+    margin: 0;
  }
  #note-container h2{
     margin: 10px 0; 
+    margin: 0;
  }
 
  
@@ -335,6 +337,19 @@ ul {
  #reset-button {
     margin-left: auto;
 
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 50px; /* 高さを指定 */
+    padding-right: 10px; /* 右側に余白を追加 */
+    
+}
+#reset-button {
+    padding: 5px 15px; /* ボタンの内側の余白 */
+    
 }
  
  
