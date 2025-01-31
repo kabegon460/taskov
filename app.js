@@ -273,9 +273,9 @@ function sortTable(columnIndex, isColorColumn = false) {
             cells[2].querySelector('a') ? cells[2].querySelector('a').href : "", // リンク
             cells[3].textContent.trim(), // Kappa
             cells[4].textContent.trim(), // トレーダー
-            cells[5].textContent.trim(), // マップ
+            cells[5].innerHTML.trim().replace(/\n/g, '<br>'), // 目標 (改行を反映)
             cells[6].innerHTML.trim().replace(/\n/g, '<br>'), // 目標 (改行を反映)
-            cells[7].textContent.trim(), // メモ
+            cells[7].innerHTML.trim().replace(/\n/g, '<br>'), // 目標 (改行を反映)
             row.style.backgroundColor, // 色
             cells[0].querySelector('input').checked // 完了状態
 
